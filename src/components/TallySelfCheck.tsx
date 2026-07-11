@@ -9,18 +9,12 @@ declare global {
 }
 
 const TALLY_SCRIPT_SRC = "https://tally.so/widgets/embed.js";
+const LAVENDER_TALLY_EMBED_URL =
+  "https://tally.so/embed/0Qy7gN?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
+const LAVENDER_TALLY_FORM_URL = "https://tally.so/r/0Qy7gN";
 
 export function TallySelfCheck() {
-  const formId = import.meta.env.VITE_TALLY_SELF_CHECK_FORM_ID as string | undefined;
-  const trimmedFormId = formId?.trim();
-  const formUrl = trimmedFormId ? `https://tally.so/r/${trimmedFormId}` : "https://tally.so";
-  const embedUrl = trimmedFormId
-    ? `https://tally.so/embed/${trimmedFormId}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1`
-    : "";
-
   useEffect(() => {
-    if (!trimmedFormId) return;
-
     const existingScript = document.querySelector<HTMLScriptElement>(
       `script[src="${TALLY_SCRIPT_SRC}"]`,
     );
@@ -41,13 +35,14 @@ export function TallySelfCheck() {
     script.src = TALLY_SCRIPT_SRC;
     script.async = true;
     script.onload = loadEmbeds;
+    script.onerror = loadEmbeds;
     document.body.appendChild(script);
 
     return () => {
       script.onload = null;
-      script.remove();
+      script.onerror = null;
     };
-  }, [trimmedFormId]);
+  }, []);
 
   return (
     <div
@@ -64,51 +59,29 @@ export function TallySelfCheck() {
         </p>
       </div>
 
-      {trimmedFormId ? (
-        <>
-          <iframe
-            title="Lavender self-check form"
-            src={embedUrl}
-            loading="lazy"
-            width="100%"
-            height="760"
-            frameBorder="0"
-            marginHeight={0}
-            marginWidth={0}
-            scrolling="no"
-            className="block min-h-[680px] w-full rounded-2xl bg-answer-row md:min-h-[760px]"
-          />
-          <p className="mt-4 text-center text-sm text-muted-foreground lowercase">
-            having trouble viewing the form?{" "}
-            <a
-              href={formUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium text-primary underline-offset-4 hover:underline"
-            >
-              open it directly
-            </a>
-            .
-          </p>
-        </>
-      ) : (
-        <div className="rounded-2xl border border-border bg-answer-row px-5 py-8 text-center">
-          <p className="text-base font-medium text-primary lowercase">
-            self-check form unavailable
-          </p>
-          <p className="mt-2 text-sm text-foreground lowercase">
-            add your Tally form id to VITE_TALLY_SELF_CHECK_FORM_ID to show the embedded form here.
-          </p>
-          <a
-            href={formUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-5 inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-warm)] transition hover:opacity-95 lowercase"
-          >
-            open tally
-          </a>
-        </div>
-      )}
+      <iframe
+        data-tally-src={LAVENDER_TALLY_EMBED_URL}
+        loading="lazy"
+        width="100%"
+        height="1"
+        frameBorder="0"
+        marginHeight={0}
+        marginWidth={0}
+        title="Lavender - ending gambling addiction for good"
+        className="block w-full rounded-2xl bg-answer-row"
+      />
+      <p className="mt-4 text-center text-sm text-muted-foreground lowercase">
+        having trouble viewing the form?{" "}
+        <a
+          href={LAVENDER_TALLY_FORM_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="font-medium text-primary underline-offset-4 hover:underline"
+        >
+          open it directly
+        </a>
+        .
+      </p>
     </div>
   );
 }

@@ -1,10 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
+
+const STRIPE_BUY_BUTTON_SCRIPT_SRC = "https://js.stripe.com/v3/buy-button.js";
+const STRIPE_BUY_BUTTON_ID = "buy_btn_1Ts2DAIsSC5GWqg7HJYiPHH8";
 
 export const Route = createFileRoute("/payments")({
   component: Payments,
 });
 
 function Payments() {
+  const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string | undefined;
+
+  useEffect(() => {
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      `script[src="${STRIPE_BUY_BUTTON_SCRIPT_SRC}"]`,
+    );
+
+    if (existingScript) return;
+
+    const script = document.createElement("script");
+    script.src = STRIPE_BUY_BUTTON_SCRIPT_SRC;
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <section className="relative overflow-hidden bg-hero-soft">
@@ -32,12 +51,18 @@ function Payments() {
                 <p className="text-3xl font-semibold text-primary lowercase">£8.99 / month</p>
                 <p className="mt-2 text-sm text-muted-foreground lowercase">Back your commitment</p>
               </div>
-              <a
-                href="#tally-form"
-                className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-elegant)] transition hover:opacity-95 lowercase"
-              >
-                join early
-              </a>
+              <div className="min-h-12">
+                {stripePublishableKey ? (
+                  <stripe-buy-button
+                    buy-button-id={STRIPE_BUY_BUTTON_ID}
+                    publishable-key={stripePublishableKey}
+                  />
+                ) : (
+                  <p className="text-sm text-destructive lowercase">
+                    stripe checkout is not configured yet.
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>

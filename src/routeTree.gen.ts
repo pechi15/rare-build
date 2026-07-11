@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PaymentsSuccessRouteImport } from './routes/payments.success'
+import { Route as PaymentsCancelledRouteImport } from './routes/payments.cancelled'
+import { Route as ApiCreateCheckoutSessionRouteImport } from './routes/api/create-checkout-session'
 
 const PaymentsRoute = PaymentsRouteImport.update({
   id: '/payments',
@@ -22,31 +25,73 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentsSuccessRoute = PaymentsSuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
+  getParentRoute: () => PaymentsRoute,
+} as any)
+const PaymentsCancelledRoute = PaymentsCancelledRouteImport.update({
+  id: '/cancelled',
+  path: '/cancelled',
+  getParentRoute: () => PaymentsRoute,
+} as any)
+const ApiCreateCheckoutSessionRoute =
+  ApiCreateCheckoutSessionRouteImport.update({
+    id: '/api/create-checkout-session',
+    path: '/api/create-checkout-session',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/payments': typeof PaymentsRoute
+  '/payments': typeof PaymentsRouteWithChildren
+  '/api/create-checkout-session': typeof ApiCreateCheckoutSessionRoute
+  '/payments/cancelled': typeof PaymentsCancelledRoute
+  '/payments/success': typeof PaymentsSuccessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/payments': typeof PaymentsRoute
+  '/payments': typeof PaymentsRouteWithChildren
+  '/api/create-checkout-session': typeof ApiCreateCheckoutSessionRoute
+  '/payments/cancelled': typeof PaymentsCancelledRoute
+  '/payments/success': typeof PaymentsSuccessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/payments': typeof PaymentsRoute
+  '/payments': typeof PaymentsRouteWithChildren
+  '/api/create-checkout-session': typeof ApiCreateCheckoutSessionRoute
+  '/payments/cancelled': typeof PaymentsCancelledRoute
+  '/payments/success': typeof PaymentsSuccessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/payments'
+  fullPaths:
+    | '/'
+    | '/payments'
+    | '/api/create-checkout-session'
+    | '/payments/cancelled'
+    | '/payments/success'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/payments'
-  id: '__root__' | '/' | '/payments'
+  to:
+    | '/'
+    | '/payments'
+    | '/api/create-checkout-session'
+    | '/payments/cancelled'
+    | '/payments/success'
+  id:
+    | '__root__'
+    | '/'
+    | '/payments'
+    | '/api/create-checkout-session'
+    | '/payments/cancelled'
+    | '/payments/success'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PaymentsRoute: typeof PaymentsRoute
+  PaymentsRoute: typeof PaymentsRouteWithChildren
+  ApiCreateCheckoutSessionRoute: typeof ApiCreateCheckoutSessionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +110,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payments/success': {
+      id: '/payments/success'
+      path: '/success'
+      fullPath: '/payments/success'
+      preLoaderRoute: typeof PaymentsSuccessRouteImport
+      parentRoute: typeof PaymentsRoute
+    }
+    '/payments/cancelled': {
+      id: '/payments/cancelled'
+      path: '/cancelled'
+      fullPath: '/payments/cancelled'
+      preLoaderRoute: typeof PaymentsCancelledRouteImport
+      parentRoute: typeof PaymentsRoute
+    }
+    '/api/create-checkout-session': {
+      id: '/api/create-checkout-session'
+      path: '/api/create-checkout-session'
+      fullPath: '/api/create-checkout-session'
+      preLoaderRoute: typeof ApiCreateCheckoutSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface PaymentsRouteChildren {
+  PaymentsCancelledRoute: typeof PaymentsCancelledRoute
+  PaymentsSuccessRoute: typeof PaymentsSuccessRoute
+}
+
+const PaymentsRouteChildren: PaymentsRouteChildren = {
+  PaymentsCancelledRoute: PaymentsCancelledRoute,
+  PaymentsSuccessRoute: PaymentsSuccessRoute,
+}
+
+const PaymentsRouteWithChildren = PaymentsRoute._addFileChildren(
+  PaymentsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PaymentsRoute: PaymentsRoute,
+  PaymentsRoute: PaymentsRouteWithChildren,
+  ApiCreateCheckoutSessionRoute: ApiCreateCheckoutSessionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

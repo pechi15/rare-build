@@ -118,20 +118,28 @@ function Community() {
       <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-12 gap-12 items-center">
         <div className="md:col-span-6">
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-primary lowercase">
-            you don't have to
+            change the game
             <br />
-            do this alone.
+            together.
           </h2>
           <p className="mt-6 text-lg text-foreground max-w-lg lowercase">
-            lavender pairs you with a small, private circle of people working through the same
-            patterns. real accountability, honest check-ins, and tools that respect how hard this
-            actually is.
+            lavender turns gambling recovery into a team sport. connect with your circle, own your
+            goals, and rise up the leaderboard as you build a gamble-free life.
           </p>
           <ul className="mt-8 space-y-4">
             {[
-              ["private circles", "six people, one facilitator, weekly rhythm."],
-              ["craving toolkit", "in-the-moment techniques when the urge hits."],
-              ["financial guardrails", "optional friction between you and the next bet."],
+              [
+                "own the streak",
+                "set your goals and gamify your progress. every day you stay gamble-free keeps your streak alive and helps the team win.",
+              ],
+              [
+                "live accountability",
+                "your circle has your back. if you step near a casino or open a gambling site, your network gets a silent, instant ping to step in.",
+              ],
+              [
+                "beyond the screen",
+                "take it offline. find local chapters, join casual in-person meetups, and connect with your community over coffee, sports, or real-world hangouts.",
+              ],
             ].map(([t, d]) => (
               <li key={t} className="flex gap-4">
                 <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-primary" />
