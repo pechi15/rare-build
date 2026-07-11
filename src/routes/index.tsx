@@ -70,27 +70,38 @@ function Hero() {
       />
 
       <div className="max-w-6xl mx-auto px-6 pt-20 pb-24 md:pt-28 md:pb-32">
-        <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/60 px-3 py-1 text-xs uppercase tracking-[0.18em] text-primary">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            private support in progress
-          </span>
-          <h1 className="mt-6 text-5xl md:text-7xl font-semibold leading-[1.02] tracking-tight text-primary">
-            ending gambling
-            <br />
-            addictions <span className="text-lavender">for good.</span>
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-foreground max-w-2xl lowercase">
-            building a support system for you to tackle your addictive habits with a connected
-            community. private, patient, and built with the people who need it most.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <a
-              href="#check"
-              className="inline-flex items-center rounded-full px-6 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-elegant)] hover:opacity-95 transition bg-primary lowercase"
-            >
-              do you think you have a gambling problem?
-            </a>
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(280px,420px)] items-center">
+          <div className="max-w-3xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/60 px-3 py-1 text-xs uppercase tracking-[0.18em] text-primary">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              private support in progress
+            </span>
+            <h1 className="mt-6 text-5xl md:text-7xl font-semibold leading-[1.02] tracking-tight text-primary">
+              ending gambling
+              <br />
+              addictions <span className="text-lavender">for good.</span>
+            </h1>
+            <p className="mt-6 text-lg md:text-xl text-foreground max-w-2xl lowercase">
+              building a support system for you to tackle your addictive habits with a connected
+              community. private, patient, and built with the people who need it most.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <a
+                href="#check"
+                className="inline-flex items-center rounded-full px-6 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-elegant)] hover:opacity-95 transition bg-primary lowercase"
+              >
+                do you think you have a gambling problem?
+              </a>
+            </div>
+          </div>
+          <div className="flex justify-center lg:justify-end">
+            <img
+              src="/lavender-app-preview.jpg"
+              alt="lavender app preview"
+              className="w-full max-w-[360px] rounded-[2rem] object-contain shadow-[var(--shadow-elegant)]"
+              loading="eager"
+              decoding="async"
+            />
           </div>
         </div>
       </div>
